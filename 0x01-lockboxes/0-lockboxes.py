@@ -1,37 +1,27 @@
- #!/usr/bin/python3
- """
- method that determines if all the boxes can be opened.
+#!/usr/bin/python3
+"""
+You have n number of locked boxes in front of you.
+Each box is numbered sequentially
+from 0 to n - 1 and each box may
+contain keys to the other boxes.
+"""
 
-    Prototype: def canUnlockAll(boxes)
-    boxes is a list of lists
- """
 
 def canUnlockAll(boxes):
-    # Set to keep track of opened boxes
-    opened = set([0])
+    """
+     a method that determines if all the boxes can be opened.
 
-    # Queue to keep track of boxes to be opened
-    queue = [0]
+    :param boxes:
+    :return: True or False
+    """
+    if not boxes or type(boxes) is not list:
+        return False
 
-    # Perform BFS
-    while queue:
-        box = queue.pop(0)
-        for key in boxes[box]:
-            if key not in opened and key < len(boxes):
-                opened.add(key)
-                queue.append(key)
-
-    # Check if all boxes can be opened
-    return len(opened) == len(boxes)
-
-
-# Test cases
-if __name__ == "__main__":
-    boxes1 = [[1], [2], [3], [4], []]
-    print(canUnlockAll(boxes1))  # True
-
-    boxes2 = [[1, 4, 6], [2], [0, 4, 1], [5, 6, 2], [3], [4, 1], [6]]
-    print(canUnlockAll(boxes2))  # True
-
-    boxes3 = [[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]]
-    print(canUnlockAll(boxes3))  # False
+    unlocked = [0]
+    for n in unlocked:
+        for key in boxes[n]:
+            if key not in unlocked and key < len(boxes):
+                unlocked.append(key)
+    if len(unlocked) == len(boxes):
+        return True
+    return False
