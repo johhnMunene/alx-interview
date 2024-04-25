@@ -1,3 +1,11 @@
+ #!/usr/bin/python3
+ """
+ method that determines if all the boxes can be opened.
+
+    Prototype: def canUnlockAll(boxes)
+    boxes is a list of lists
+ """
+
 def canUnlockAll(boxes):
     # Set to keep track of opened boxes
     opened = set([0])
