@@ -4,9 +4,9 @@
 import sys
 
 
-def print_n(t_file_size, status):
+def print_metrics(total_file_size, status):
     """Prints total file size and status list"""
-    print("File size: {:d}".format(t_file_size))
+    print("File size: {:d}".format(total_file_size))
     for key, value in sorted(status.items()):
         if value != 0:
             print("{}: {}".format(key, value))
@@ -15,28 +15,30 @@ def print_n(t_file_size, status):
 status = {'200': 0, '301': 0, '400': 0, '401': 0,
           '403': 0, '404': 0, '405': 0, '500': 0}
 
-t_file_size = 0
-count = 0
+total_file_size = 0
+line_count = 0
 try:
     for line in sys.stdin:
-        args = line.split()
+        line = line.strip()  # Remove leading/trailing whitespaces
 
-        if len(args) > 2:
-            status_code = args[-2]
-            file_size = int(args[-1])
+        # Split line into components
+        parts = line.split()
+        
+        # Ensure the line has the expected format
+        if len(parts) >= 7 and parts[-3].isdigit() and parts[-2] in status:
+            status_code = parts[-2]
+            file_size = int(parts[-1])
 
-            if status_code in status:
-                status[status_code] += 1
+            status[status_code] += 1
+            total_file_size += file_size
+            line_count += 1
 
-            t_file_size += file_size
-            count += 1
-
-            if count == 10:
-                print_n(t_file_size, status)
-                count = 0
+            # Print metrics after every 10 lines
+            if line_count % 10 == 0:
+                print_metrics(total_file_size, status)
 
 except KeyboardInterrupt:
     pass
 
 finally:
-    print_n(t_file_size, status)
+    print_metrics(total_file_size, status)
