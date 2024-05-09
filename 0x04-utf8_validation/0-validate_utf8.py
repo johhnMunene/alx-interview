@@ -9,18 +9,19 @@ The data set can contain multiple characters
 The data will be represented by a list of integers
 Each integer represents 1 byte of data, therefore you only need to handle the 8 least significant bits of each integer
 """
+
+
 def validUTF8(data):
     """Initialize a variable to keep track of the number of bytes in the current UTF-8 character
     """
     num_bytes = 0
-    
 
     for num in data:
-    
+
         if num >> 6 == 0b10:
-            
+
             num_bytes -= 1
-            
+
             if num_bytes < 0:
                 return False
         else:
@@ -34,7 +35,6 @@ def validUTF8(data):
             elif num >> 3 == 0b11110:
                 num_bytes = 3
             else:
-                
-                return False
-                 return num_bytes == 0
 
+                return False
+                return num_bytes == 0
