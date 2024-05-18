@@ -52,3 +52,4 @@ for answer in reversed(solve_nqueens(n_q)):
     for p in [list(p) for p in answer]:
         result.append([i - 1 for i in p])
     print(result)
+    

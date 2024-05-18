@@ -3,7 +3,7 @@
 # Short Specializations
 ### 0x05. N Queens
 # Algorithm
-#Python
+# Python
  - Weight: 1
  - Project will start May 12, 2024 10:00 PM, must end by May 16, 2024 10:00 PM
  - Checker was released at May 13, 2024 10:00 PM
@@ -11,7 +11,7 @@
  - The “0x05. N queens” project is a classic problem in computer science and mathematics, known for its application of the backtracking algorithm to place N non-attacking queens on an N×N chessboard. To successfully complete this project, you will need to understand several key concepts and have access to resources that will help you grasp the necessary algorithms and techniques.
 
 ### Concepts Needed:
--Backtracking Algorithms:
+- Backtracking Algorithms:
 
 - Understanding how backtracking algorithms work to explore all potential solutions to a problem and backtrack w  hen a solution cannot be completed.
 # Backtracking Introduction
