@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+""
 import sys
 
 def init_board(n):
@@ -78,3 +78,4 @@ if __name__ == "__main__":
     solutions = solve_nqueens(board, 0, 0, [])
     for sol in solutions:
         print(sol)
+        
