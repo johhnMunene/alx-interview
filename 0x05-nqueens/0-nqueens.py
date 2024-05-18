@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""0-nqueens.py"""
 import sys
 
 def init_board(n):
