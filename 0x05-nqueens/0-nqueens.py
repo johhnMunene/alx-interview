@@ -1,13 +1,11 @@
-#!/usr/bin/env python3
-"""0-nqueens.py"""
+#!/usr/bin/python3
 import sys
 
 def init_board(n):
     """
     Initializes an empty chessboard of size n x n.
     """
-    board = [['' for _ in range(n)] for _ in range(n)]
-    return board
+    return [['' for _ in range(n)] for _ in range(n)]
 
 def get_solution(board):
     """
@@ -26,24 +24,15 @@ def is_safe(board, row, col):
     Checks if it's safe to place a queen at board[row][col].
     """
     n = len(board)
-    # Check column
     for i in range(row):
         if board[i][col] == 'Q':
             return False
-    # Check upper left diagonal
-    i, j = row, col
-    while i >= 0 and j >= 0:
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
         if board[i][j] == 'Q':
             return False
-        i -= 1
-        j -= 1
-    # Check upper right diagonal
-    i, j = row, col
-    while i >= 0 and j < n:
+    for i, j in zip(range(row, -1, -1), range(col, n)):
         if board[i][j] == 'Q':
             return False
-        i -= 1
-        j += 1
     return True
 
 def solve_nqueens(board, row, solutions):
@@ -54,7 +43,6 @@ def solve_nqueens(board, row, solutions):
     if row == n:
         solutions.append(get_solution(board))
         return
-    
     for col in range(n):
         if is_safe(board, row, col):
             board[row][col] = "Q"
