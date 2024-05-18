@@ -1,81 +1,54 @@
-#!/usr/bin/env python3
-""
+#!/usr/bin/python3
+"""
+N queens
+"""
+
 import sys
 
-def init_board(n):
-    """
-    Initializes an empty chessboard of size n x n.
-    """
-    board = [['' for _ in range(n)] for _ in range(n)]
-    return board
+if len(sys.argv) != 2:
+    print('Usage: nqueens N')
+    exit(1)
 
-def get_solution(board):
-    """
-    Returns the solution from the given board configuration.
-    """
-    solution = []
-    for r in range(len(board)):
-        for c in range(len(board)):
-            if board[r][c] == "Q":
-                solution.append((r, c))
-                break
-    return solution
+try:
+    n_q = int(sys.argv[1])
+except ValueError:
+    print('N must ba a number')
+    exit(1)
 
-def mark_attacking_positions(board, row, col):
-    """
-    Marks the attacking positions of a queen placed at (row, col).
-    """
-    n = len(board)
-    # Mark horizontal and vertical positions
-    for i in range(n):
-        board[row][i] = "x"
-        board[i][col] = "x"
-    # Mark diagonal positions
-    for i, j in zip(range(row+1, n), range(col+1, n)):
-        if i < n and j < n:
-            board[i][j] = "x"
-    for i, j in zip(range(row-1, -1, -1), range(col+1, n)):
-        if i >= 0 and j < n:
-            board[i][j] = "x"
-    for i, j in zip(range(row+1, n), range(col-1, -1, -1)):
-        if i < n and j >= 0:
-            board[i][j] = "x"
-    for i, j in zip(range(row-1, -1, -1), range(col-1, -1, -1)):
-        if i >= 0 and j >= 0:
-            board[i][j] = "x"
+if n_q < 4:
+    print('N must ba at least 4')
+    exit(1)
 
-def solve_nqueens(board, row, queens, solutions):
-    """
-    Recursive function to solve the N-queens puzzle.
-    """
-    n = len(board)
-    if queens == n:
-        solutions.append(get_solution(board))
-        return solutions
-    
-    for col in range(n):
-        if board[row][col] == "":
-            tmp_board = [row[:] for row in board]  # Create a copy of the board
-            tmp_board[row][col] = "Q"  # Place a queen at (row, col)
-            mark_attacking_positions(tmp_board, row, col)
-            solutions = solve_nqueens(tmp_board, row+1, queens+1, solutions)
-    
-    return solutions
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-    if not sys.argv[1].isdigit():
-        print("N must be a number")
-        sys.exit(1)
-    n = int(sys.argv[1])
-    if n < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-    
-    board = init_board(n)
-    solutions = solve_nqueens(board, 0, 0, [])
-    for sol in solutions:
-        print(sol)
-        
+def solve_nqueens(n):
+    ''' self descriptive '''
+    if n == 0:
+        return [[]]
+    inner_solution = solve_nqueens(n - 1)
+    return [solution + [(n, i + 1)]
+            for i in range(n_q)
+            for solution in inner_solution
+            if safe_queen((n, i + 1), solution)]
+
+
+def attack_queen(square, queen):
+    '''self descriptive'''
+    (row1, col1) = square
+    (row2, col2) = queen
+    return (row1 == row2) or (col1 == col2) or\
+        abs(row1 - row2) == abs(col1 - col2)
+
+
+def safe_queen(sqr, queens):
+    '''self descriptive'''
+    for queen in queens:
+        if attack_queen(sqr, queen):
+            return False
+    return True
+
+
+for answer in reversed(solve_nqueens(n_q)):
+    result = []
+    for p in [list(p) for p in answer]:
+        result.append([i - 1 for i in p])
+    print(result)
