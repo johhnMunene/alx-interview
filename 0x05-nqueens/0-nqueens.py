@@ -66,3 +66,4 @@ if __name__ == "__main__":
     solve_nqueens(board, 0, solutions)
     for sol in solutions:
         print(sol)
+        
