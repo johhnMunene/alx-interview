@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 import sys
 
+
 def init_board(n):
     """
     Initializes an empty chessboard of size n x n.
     """
     return [['' for _ in range(n)] for _ in range(n)]
+
 
 def get_solution(board):
     """
@@ -18,6 +20,7 @@ def get_solution(board):
                 solution.append([r, c])
                 break
     return solution
+
 
 def is_safe(board, row, col):
     """
@@ -35,6 +38,7 @@ def is_safe(board, row, col):
             return False
     return True
 
+
 def solve_nqueens(board, row, solutions):
     """
     Recursive function to solve the N-queens puzzle.
@@ -49,6 +53,7 @@ def solve_nqueens(board, row, solutions):
             solve_nqueens(board, row + 1, solutions)
             board[row][col] = ""  # Backtrack
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
@@ -60,10 +65,9 @@ if __name__ == "__main__":
     if n < 4:
         print("N must be at least 4")
         sys.exit(1)
-    
+
     board = init_board(n)
     solutions = []
     solve_nqueens(board, 0, solutions)
     for sol in solutions:
         print(sol)
-        
