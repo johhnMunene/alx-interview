@@ -1,25 +1,29 @@
 #!/usr/bin/node
-// A script that prints all characters of a Star Wars movie
-
 const request = require('request');
+const API_URL = `https://swapi-api.hbtn.io/api/films/${process.argv[2]}`;
 
-const movie = process.argv[2];
-const api = 'https://swapi-api.hbtn.io/api/';
-const url = api + 'films/' + movie + '/';
-request.get({ url: url }, function (error, response, body) {
-  if (!error) {
-    const characters = JSON.parse(body).characters;
-    order(characters);
-  }
-});
+// a function to return a list of promises for each character fetched from the api
+function getCharacterNames (characters) {
+  const names = characters.map((character) => {
+    return new Promise((resolve, reject) => {
+      request(character, (error, _, body) => {
+        if (error) reject(Error('something went wrong'));
+        else resolve(JSON.parse(body).name);
+      });
+    });
+  });
+  return names;
+}
 
-function order (characters) {
-  if (characters.length > 0) {
-    request.get({ url: characters.shift() }, function (err, res, body) {
-      if (!err) {
-        console.log(JSON.parse(body).name);
-        order(characters);
-      }
+request(API_URL, (error, _, body) => {
+  if (error) console.log(`error: ${error}`);
+  else {
+    const targetFilm = JSON.parse(body);
+    const namesPromises = getCharacterNames(targetFilm.characters);
+    Promise.all(namesPromises).then((result) => {
+      result.forEach((element) => {
+        console.log(element);
+      });
     });
   }
-}
+});
