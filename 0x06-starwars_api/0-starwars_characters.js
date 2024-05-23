@@ -1,37 +1,25 @@
 #!/usr/bin/node
 const request = require('request');
-const API_URL = `https://swapi-api.hbtn.io/api/films/${process.argv[2]}`;
+const movieId = process.argv[2];
+const options = {
+  url: 'https://swapi-api.hbtn.io/api/films/' + movieId,
+  method: 'GET',
+};
 
-// Function to return a list of promises for each character fetched from the API
-function getCharacterNames(characters) {
-  return characters.map(character => {
-    return new Promise((resolve, reject) => {
-      request(character, (error, _, body) => {
-        if (error) {
-          reject(`Error fetching character: ${error}`);
-        } else {
-          resolve(JSON.parse(body).name);
-        }
-      });
-    });
-  });
-}
-
-request(API_URL, (error, _, body) => {
-  if (error) {
-    console.error(`Error fetching film details: ${error}`);
-  } else {
-    const targetFilm = JSON.parse(body);
-    const namesPromises = getCharacterNames(targetFilm.characters);
-    Promise.all(namesPromises)
-      .then(names => {
-        names.forEach(name => {
-          console.log(name);
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+request(options, function (error, response, body) {
+  if (!error) {
+    const characters = JSON.parse(body).characters;
+    getMoviecharaters(characters, 0);
   }
 });
 
+function getMoviecharaters(characters, index) {
+  request(characters[index], function (error, response, body) {
+    if (!error) {
+      console.log(JSON.parse(body).name);
+      if (index + 1 < characters.length) {
+        getMoviecharaters(characters, index + 1);
+      }
+    }
+  });
+}
